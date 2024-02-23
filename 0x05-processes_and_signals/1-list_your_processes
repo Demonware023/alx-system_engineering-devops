@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# A Bash script that displays list of currently running processes in a certain hierarchy.
+
+ps auxf
