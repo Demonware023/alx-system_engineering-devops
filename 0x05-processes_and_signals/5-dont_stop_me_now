@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# A Bash script that stops a process using the kill not control-c command from two terminals.
+
+pkill -f 4-to_infinity_and_beyond
