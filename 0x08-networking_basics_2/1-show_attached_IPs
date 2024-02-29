@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 # Retrieve all IPv4 addresses associated with active network interfaces
-ipv4_addresses=$(ip -4 addr show | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+# ipv4_addresses=$(ip -4 addr show | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+ip -4 addr | awk '/inet/ {print $2}' | cut -d'/' -f1
 
 # Output the retrieved IPv4 addresses
 echo "$ipv4_addresses"
