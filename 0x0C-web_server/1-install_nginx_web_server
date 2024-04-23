@@ -8,7 +8,7 @@ sudo apt-get install -y nginx
 sudo ufw 'Nginx HTTP'
 
 # Create a new index.html file
-echo "Hello World!" | sudo tee/var/www/html/index.html
+echo "Hello World!" | sudo tee /var/www/html/index.html
 
 # Modify the default Nginx configuration file
 sudo nginx -t
