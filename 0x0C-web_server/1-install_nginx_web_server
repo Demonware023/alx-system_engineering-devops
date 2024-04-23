@@ -1,16 +1,17 @@
-#!/usr/bin/bash env
+#!/usr/bin/env bash
 
 # Update the package lists for upgrades and new package installations
 sudo apt-get update
 
 # Install nginx
 sudo apt-get install -y nginx
+sudo ufw 'Nginx HTTP'
 
 # Create a new index.html file
-echo "Hello World!" > /var/www/html/index.html
+echo "Hello World!" | sudo tee/var/www/html/index.html
 
 # Modify the default Nginx configuration file
-sudo sed -i 's|root /var/www/html;|root /var/www/html;\n\tindex index.html;|' /etc/nginx/sites-available/default
+sudo nginx -t
 
 # Restart nginx
 sudo service nginx restart
