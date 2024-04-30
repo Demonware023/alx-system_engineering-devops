@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2154
 # Configure Nginx to add a custom header with the hostname
 
 # Install Nginx if it's not already installed
@@ -11,5 +12,21 @@ HOSTNAME=$(hostname)
 # Configure Nginx to add the custom header
 sudo sed -i "/server_name _;/a \\\tadd_header X-Served-By $HOSTNAME;" /etc/nginx/sites-available/default
 
+# Check if the sed command was successful
+if [ "$?" -eq 0 ]; then
+    echo "Custom header configuration successful."
+else
+    echo "Failed to configure custom header."
+    exit 1
+fi
+
 # Restart Nginx to apply the changes
 sudo systemctl restart nginx
+
+# Check if the Nginx restart was successful
+if [ "$?" -eq 0 ]; then
+    echo "Nginx restarted successfully."
+else
+    echo "Failed to restart Nginx."
+    exit 1
+fi
