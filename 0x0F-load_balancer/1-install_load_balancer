@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-# Create a script to install and configure HAProxy on lb-01 server
-# Configure HAProxy to send traffic to web-01 and web-02 servers
-# Distribute requests using a roundrobin algorithm
-# Make sure that HAProxy can be managed via an init script
+# This shebang line indicates that the script should be run in the Bash shell.
 
 # Install and configure HAproxy on my lb-01 server.
 sudo apt-get -y update
-apt-get -y install haproxy
+# The 'sudo' command allows running commands with superuser privileges.
+# 'apt-get -y update' updates the list of available packages and their versions.
+
+sudo apt-get -y install haproxy
+# 'apt-get -y install haproxy' installs the HAProxy package without prompting for confirmation.
 
 # edit config file
 server_config=\
@@ -20,13 +21,28 @@ backend besthor_backend
         server web-01 54.89.194.40:80 check
         server web-02 52.87.255.22:80 check
 "
+# This variable 'server_config' holds the configuration for HAProxy.
+# 'frontend' defines the settings for incoming connections.
+# 'bind *:80' tells HAProxy to listen on all interfaces on port 80.
+# 'mode http' sets the operating mode to HTTP.
+# 'default_backend besthor_backend' specifies the default backend to use.
+# 'backend' defines how to handle requests sent to the backend.
+# 'balance roundrobin' sets the load balancing algorithm to round-robin.
+# 'server web-01' and 'server web-02' define the backend servers with their IP addresses and ports.
+
 echo "$server_config" | sudo tee -a /etc/haproxy/haproxy.cfg
+# 'echo' outputs the 'server_config' variable contents.
+# The pipe '|' feeds this output into the 'tee' command.
+# 'sudo tee -a /etc/haproxy/haproxy.cfg' appends the output to the HAProxy configuration file.
 
 # enable haproxy to be started by init script
 echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
+# This line enables HAProxy to be managed by an init script by setting 'ENABLED=1' in its default configuration file.
 
 # Testing the HAproxy configuration file
 sudo haproxy -c -f /etc/haproxy/haproxy.cfg
+# 'sudo haproxy -c -f /etc/haproxy/haproxy.cfg' tests the HAProxy configuration file for any syntax errors.
 
-# Restart the Nginx service
+# Restart the HAProxy service
 sudo service haproxy restart
+# Finally, the script restarts the HAProxy service to apply the new configuration.
