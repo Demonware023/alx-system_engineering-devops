@@ -1,19 +1,24 @@
 # Puppet manifest to configure Nginx with a custom HTTP header 'X-Served-By'
+# 2-puppet_custom_http_response_header.pp
+node default {
+  class { 'nginx': }
 
-# Automating project requirements using Puppet
+  $hostname = $::hostname
 
-package { 'nginx':
-  ensure => installed,
-}
-
-file_line { 'nginx_custom_header':
-  ensure => present,
-  path   => '/etc/nginx/sites-enabled/default',
-  line   => "add_header X-Served-By ${::hostname};",
-  match  => '^add_header X-Served-By',
-}
-
-service { 'nginx':
-  ensure  => running,
-  require => Package['nginx'],
+  nginx::resource::server { $hostname:
+    listen_port => 80,
+    www_root => '/var/www/html',
+    index_files => ['index.html'],
+    autoindex => 'on',
+    use_default_location => false,
+    location_cfg_append => {
+      'add_header' => "X-Served-By $hostname",
+    },
+    locations => {
+      '/' => {
+        location => '/',
+        www_root => '/var/www/html',
+      },
+    },
+  }
 }
