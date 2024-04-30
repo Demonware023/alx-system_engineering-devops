@@ -24,27 +24,11 @@ new_string="listen 80 default_server;\n\terror_page 404 \/404.html;\n\tlocation 
 
 sudo sed -i "s/listen 80 default_server;/$new_string/" /etc/nginx/sites-enabled/default
 
-# Creating a HTTP response header / Configure Nginx to add the custom header
+# Creating an HTTP response header
 sudo sed -i "/server_name _/a add_header X-Served-By $HOSTNAME;" /etc/nginx/sites-enabled/default
-
-# Check if the sed command was successful
-if [ "$?" -eq 0 ]; then
-    echo "Custom header configuration successful."
-else
-    echo "Failed to configure custom header."
-    exit 1
-fi
 
 # Testing configurations for syntax errors
 sudo nginx -t
 
-# Restart Nginx to apply the changes
-sudo systemctl restart nginx
-
-# Check if the Nginx restart was successful
-if [ "$?" -eq 0 ]; then
-    echo "Nginx restarted successfully."
-else
-    echo "Failed to restart Nginx."
-    exit 1
-fi
+# Restart nginx after implementing changes
+sudo service nginx restart
