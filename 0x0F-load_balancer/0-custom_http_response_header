@@ -1,32 +1,28 @@
-#!/bin/bash
-# shellcheck disable=SC2154
-# Configure Nginx to add a custom header with the hostname
+#!/usr/bin/env bash
+# Customizing a 404-error_page
 
-# Install Nginx if it's not already installed
-sudo apt update
-sudo apt install -y nginx
+# Updating Packages before performing installations
+sudo apt-get update
+sudo apt-get install -y nginx
 
-# Get the hostname of the server
-HOSTNAME=$(hostname)
+# Creating an index.html page
+echo "Hello World!" | sudo tee /var/www/html/index.html
 
-# Configure Nginx to add the custom header
-sudo sed -i "/server_name _;/a \\\tadd_header X-Served-By $HOSTNAME;" /etc/nginx/sites-available/default
+# Performing a "moved permanently redirection" (301)
+new_string="server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/besthor permanent;"
+sudo sed -i "s/server_name _;/$new_string/" /etc/nginx/sites-enabled/default
 
-# Check if the sed command was successful
-if [ "$?" -eq 0 ]; then
-    echo "Custom header configuration successful."
-else
-    echo "Failed to configure custom header."
-    exit 1
-fi
+# Creating a 404 Custom error page
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+new_string="listen 80 default_server;\n\terror_page 404 \/404.html;\n\tlocation = \/404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
 
-# Restart Nginx to apply the changes
-sudo systemctl restart nginx
+sudo sed -i "s/listen 80 default_server;/$new_string/" /etc/nginx/sites-enabled/default
 
-# Check if the Nginx restart was successful
-if [ "$?" -eq 0 ]; then
-    echo "Nginx restarted successfully."
-else
-    echo "Failed to restart Nginx."
-    exit 1
-fi
+# Creating an HTTP response header
+sudo sed -i "/server_name _/a add_header X-Served-By $HOSTNAME;" /etc/nginx/sites-enabled/default
+
+# Testing configurations for syntax errors
+sudo nginx -t
+
+# Restart nginx after implementing changes
+sudo service nginx restart
