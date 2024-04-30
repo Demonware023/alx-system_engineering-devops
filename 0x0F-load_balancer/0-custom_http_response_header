@@ -1,10 +1,11 @@
 #!/bin/bash
-# shellcheck disable=SC2154
 # Installs Nginx and creates an index.html page
 # Performing a "moved permanently redirection" (303)to github page
 # Create 404 custom error page
 # Configure Nginx to create/add a custom header with the hostname
 # Test configurations for syntax errors and restart nginx
+# shellcheck disable=SC2154
+
 
 # Updating Packages before performing installations
 # Install Nginx if it's not already installed
