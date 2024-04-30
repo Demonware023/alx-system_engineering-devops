@@ -1,24 +1,26 @@
 # Puppet manifest to configure Nginx with a custom HTTP header 'X-Served-By'
-# 2-puppet_custom_http_response_header.pp
-node default {
-  class { 'nginx': }
+# Install Nginx package
+package { 'nginx':
+  ensure => installed,
+}
 
-  $hostname = $::hostname
+# Ensure Nginx service is running
+service { 'nginx':
+  ensure  => running,
+  require => Package['nginx'],
+}
 
-  nginx::resource::server { $hostname:
-    listen_port => 80,
-    www_root => '/var/www/html',
-    index_files => ['index.html'],
-    autoindex => 'on',
-    use_default_location => false,
-    location_cfg_append => {
-      'add_header' => "X-Served-By $hostname",
-    },
-    locations => {
-      '/' => {
-        location => '/',
-        www_root => '/var/www/html',
-      },
-    },
-  }
+# Configure Nginx virtual host with custom HTTP header
+nginx::resource::vhost { 'default':
+  ensure      => present,
+  www_root    => '/var/www/html',
+  server_name => $::hostname, # Use the hostname of the server
+  custom_fragment => "
+    add_header X-Served-By $::hostname;
+  ",
+}
+
+# Ensure index.html file exists
+file { '/var/www/html/index.html':
+  content => 'Hello World!',
 }
