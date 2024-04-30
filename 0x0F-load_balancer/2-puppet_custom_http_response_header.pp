@@ -17,11 +17,11 @@ file { '/var/www/html/index.html':
   content => 'Hello World!',
 }
 
-file_line { 'custom_http_header':
-  ensure => 'present',
-  path   => '/etc/nginx/sites-available/default',
-  match  => 'add_header X-Served-By',
-  line   => "add_header X-Served-By \$hostname;",
+file_line { 'nginx_custom_header':
+  ensure => present,
+  path   => '/etc/nginx/sites-enabled/default',
+  line   => "add_header X-Served-By ${::hostname};",
+  match  => '^add_header X-Served-By',
 }
 
 service { 'nginx':
