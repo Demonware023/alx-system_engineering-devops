@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
-# debugging nginx port 80
+# Debugging why connection is refused to nginx port 80
 
+sudo apt-get update
+sudo apt-get install -y nginx
+
+echo "Nginx is not running. Starting now..."
+sudo systemctl start nginx
+
+echo "Configure Nginx to listen on port 80. Configuring now..."
 sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 sudo service nginx restart
