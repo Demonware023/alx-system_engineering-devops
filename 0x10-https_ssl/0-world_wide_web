@@ -1,25 +1,43 @@
 #!/usr/bin/env bash
-# Shows information about subdomains.
+# Shows information about subdomains of a domain.
 # Ignore shellcheck case SC2086
 # shellcheck disable=SC2086
 
-    list_subdomains=("www" "lb-01" "web-01" "web-02")
-    domain="timeloop.tech"
-sub_domains() {
-    sub_domains() {
-    full="${sub_domain}.${domain}"
-    # Ip_address=$(dig $full | grep -A1 'ANSWER SECTION:' | sed -n '2p' | awk '{print $NF}')
-    # Run the dig command and capture the output, then extract the last two fields.
-    read -r record Ip <<< "$(dig "$full" | grep -A1 'ANSWER SECTION:' | sed -n '2p' | awk '{print $(NF-1), $NF}')"
-    echo "The subdomain $sub_domain is a $record record and points to $Ip"
-}
-#sub_domains "$1"
+# Function to fetch and display DNS record information
+fetch_dns_record() {
+  local domain=$1
+  local subdomain=$2
+  local record_info
 
-if [ -z "$1" ]; then
-    for sub_domain in "${list_subdomains[@]}"; do
-        sub_domains "$sub_domain"
-    done
-else
-    # If subdomain provided, get IP address for the subdomain
-    sub_domains "$1"
-fi
+  # Fetch DNS record using dig command
+  record_info=$(dig +short -t A "${subdomain}.${domain}")
+
+  # Check if record_info is not empty
+  if [[ -n $record_info ]]; then
+    echo "The subdomain ${subdomain} is a A record and points to ${record_info}"
+  else
+    echo "No A record found for subdomain ${subdomain}"
+  fi
+}
+
+# Main script
+main() {
+  # Check if domain argument is provided
+  if [[ -z $1 ]]; then
+    echo "Usage: $0 domain"
+    exit 1
+  fi
+
+  local domain=$1
+
+  # Fetch DNS records for www and lb-01 subdomains
+  local www_record=$(fetch_dns_record "$domain" "www")
+  local lb01_record=$(fetch_dns_record "$domain" "lb-01")
+
+  # Check if www subdomain points to lb-01 server IP
+  if [[ $www_record == $lb01_record ]]; then
+    echo "Your subdomain www points to your lb-01 server IP"
+  else
+    echo "Your subdomain www does not point to your lb-01 server IP"
+  fi
+}
