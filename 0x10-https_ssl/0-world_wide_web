@@ -24,20 +24,23 @@ fetch_dns_record() {
 main() {
   # Check if domain argument is provided
   if [[ -z $1 ]]; then
-    echo "Usage: $0 domain"
+    echo "Usage: $0 domain [subdomain]"
     exit 1
   fi
 
   local domain=$1
+  local subdomain=$2
 
-  # Fetch DNS records for www and lb-01 subdomains
-  local www_record=$(fetch_dns_record "$domain" "www")
-  local lb01_record=$(fetch_dns_record "$domain" "lb-01")
-
-  # Check if www subdomain points to lb-01 server IP
-  if [[ $www_record == $lb01_record ]]; then
-    echo "Your subdomain www points to your lb-01 server IP"
+  # Check if subdomain argument is provided
+  if [[ -n $subdomain ]]; then
+    fetch_dns_record "$domain" "$subdomain"
   else
-    echo "Your subdomain www does not point to your lb-01 server IP"
+    # Display information for default subdomains
+    for subdomain in www lb-01 web-01 web-02; do
+      fetch_dns_record "$domain" "$subdomain"
+    done
   fi
 }
+
+# Call main function with all script arguments
+main "$@"
