@@ -1,0 +1,28 @@
+Update system packages
+sudo apt-get update
+
+Install ufw firewall
+sudo apt-get install ufw
+
+Block all incoming traffic
+sudo ufw default deny incoming
+
+Allow outgoing connections
+sudo ufw default allow outgoing
+
+Add rules to allow incoming traffic on the specific ports - For SSH(port 22) 
+sudo ufw allow 22/tcp
+
+Add rules to allow incoming traffic on the specific ports - For HTTPS(port 443)
+
+sudo ufw allow 443/tcp
+
+Add rules to allow incoming traffic on the specific ports - For HTTP(port 80)
+
+sudo ufw allow 80/tcp
+
+Enable ufw
+sudo ufw enable
+
+Check the status of ufw and see the rules you’ve set up
+sudo ufw status verbose
