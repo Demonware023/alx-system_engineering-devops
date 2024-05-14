@@ -40,9 +40,9 @@ frontend www-http
     redirect scheme https code 301 if !{ ssl_fc }
 
 frontend www-https
-    bind *:443 ssl crt /etc/haproxy/certs/www.yourdomain.com.pem
+    bind *:443 ssl crt /etc/haproxy/certs/www.timeloop.tech.pem
     reqadd X-Forwarded-Proto:\ https
     default_backend www-backend
 
 backend www-backend
-    server www-1 www.yourdomain.com:80 check
+    server www-1 www.timeloop.tech:80 check
