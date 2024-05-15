@@ -6,8 +6,7 @@
 # the script should run the whoami command under the user passed as an argument
 # make sure to try your script by passing different users.
 # Check if a user name is provided
-if [ -z "$1" ]
-then
+if [ "$#" -ne 1 ]; then
     echo "Please provide a username."
     exit 1
 fi
