@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# A script that runs 'whoami' as the specified user
+# Requirements:
+
+# write a Bash script that accepts one argument
+# the script should run the whoami command under the user passed as an argument
+# make sure to try your script by passing different users.
+# Check if a user name is provided
+if [ -z "$1" ]
+then
+    echo "Please provide a username."
+    exit 1
+fi
+
+# Run the whoami command as the specified user
+sudo -u $1 whoami
