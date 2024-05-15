@@ -7,11 +7,18 @@
 # nginx must be listening on all active IPs on port 8080
 # You cannot use apt-get remove
 # Write a Bash script that configures the container to fit the above requirements
-# Set nginx user in nginx.conf
-sed -i 's/^user .*$/user nginx;/g' /etc/nginx/nginx.conf
 
-# Set nginx to listen on port 8080 for all IPs
-sed -i 's/^listen       80;/listen       8080;/g' /etc/nginx/sites-available/default
+# Fixes a web server to run Nginx as the nginx user listening on port 8080.
 
-# Restart nginx service to apply changes
-service nginx restart
+# Stop nginx service
+service nginx stop
+# set a user in the config by replace '#user' and it's value
+sed -i "s/#user www-data/user nginx/" /etc/nginx/nginx.conf
+# replace port 80 with 8080 in the sites-available config
+sed -i "s/80/8080/g" /etc/nginx/sites-available/default
+# give owner permissions to read and write to the config file
+chmod 644 /etc/nginx/nginx.conf
+# apache may interfere with nginx so kill the process if it is running
+pkill apache2
+# now start the nginx service with the new nginx user
+sudo -u nginx service nginx start
