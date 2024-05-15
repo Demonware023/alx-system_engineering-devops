@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # A script that runs 'whoami' as the specified user
+sudo -u $1 whoami
 # Requirements:
 
 # write a Bash script that accepts one argument
@@ -8,4 +9,4 @@
 # Check if a user name is provided
 
 # Run the whoami command as the specified user
-sudo -u $1 whoami
+# sudo -u $1 whoami
