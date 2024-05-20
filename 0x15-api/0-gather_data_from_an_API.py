@@ -16,7 +16,7 @@ if __name__ == "__main__":
         print("Employee ID must be an integer")
         sys.exit(1)
 
-    url = "https://jsonplaceholder.typicode.com"
+    url = "https://jsonplaceholder.typicode.com/todos/1"
     user_url = f"{url}/users/{employee_id}"
     todos_url = f"{url}/todos?userId={employee_id}"
 
