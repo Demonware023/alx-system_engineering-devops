@@ -12,8 +12,12 @@ if __name__ == "__main__":
         print("Usage: ./3-dictionary_of_list_of_dictionaries.py")
         sys.exit(1)
 
-    users_response = requests.get("https://jsonplaceholder.typicode.com/users")
-    todos_response = requests.get("https://jsonplaceholder.typicode.com/todos")
+    url = "https://jsonplaceholder.typicode.com"
+    users_url = f"{url}/users"
+    todos_url = f"{url}/todos"
+
+    users_response = requests.get(users_url)
+    todos_response = requests.get(todos_url)
 
     if users_response.status_code != 200:
         print("Error: Empty - No records found")
