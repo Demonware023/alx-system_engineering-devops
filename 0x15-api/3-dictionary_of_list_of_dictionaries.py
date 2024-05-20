@@ -1,33 +1,45 @@
+#!/usr/bin/python3
+"""
+Script that uses a REST API to return information about all employee's TODO list
+and exports it in JSON format.
+"""
 import json
 import requests
+import sys
 
-# Fetch users and their tasks
-users_response = requests.get('https://jsonplaceholder.typicode.com/users')
-todos_response = requests.get('https://jsonplaceholder.typicode.com/todos')
+if __name__ == "__main__":
+    if len(sys.argv) != 1:
+        print("Usage: ./3-dictionary_of_list_of_dictionaries.py")
+        sys.exit(1)
 
-users = users_response.json()
-todos = todos_response.json()
+    users_response = requests.get("https://jsonplaceholder.typicode.com/users")
+    todos_response = requests.get("https://jsonplaceholder.typicode.com/todos")
 
-# Create a dictionary to hold the data
-all_users_tasks = {}
+    if users_response.status_code != 200:
+        print("Error: Empty - No records found")
+        sys.exit(1)
 
-# Populate the dictionary with user tasks
-for user in users:
-    user_id = user['id']
-    username = user['username']
-    user_tasks = []
+    users = users_response.json()
+    todos = todos_response.json()
 
-    for task in todos:
-        if task['userId'] == user_id:
-            user_tasks.append({
+    # Process the data
+    data = {}
+
+    for user in users:
+        user_id = user['id']
+        username = user['username']
+        user_tasks = [task for task in todos if task['userId'] == user_id]
+
+        data[user_id] = []
+        for task in user_tasks:
+            data[user_id].append({
                 "username": username,
                 "task": task['title'],
                 "completed": task['completed']
             })
-    
-    all_users_tasks[user_id] = user_tasks
 
-# Write the data to a JSON file
-with open('todo_all_employees.json', 'w') as json_file:
-    json.dump(all_users_tasks, json_file)
+    # Export to JSON
+    with open("todo_all_employees.json", "w") as json_file:
+        json.dump(data, json_file, indent=4)
 
+    print("Data has been exported to todo_all_employees.json")
