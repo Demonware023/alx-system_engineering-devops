@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
-Module for counting keywords in titles of hot articles of a subreddit recursively
+Module for counting keywords in titles of hot articles of
+a subreddit recursively
 """
 import requests
 
