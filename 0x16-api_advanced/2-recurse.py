@@ -21,14 +21,16 @@ def recurse(subreddit, hot_list=[], after=None):
     params = {'after': after, 'limit': 100}
 
     try:
-        response = requests.get(url, headers=headers, params=params, allow_redirects=False)
+        response = requests.get(url, headers=headers, params=params,
+                                allow_redirects=False)
         if response.status_code == 200:
             data = response.json()
             posts = data.get('data', {}).get('children', [])
             if not posts and not hot_list:
                 return None
 
-            hot_list.extend(post.get('data', {}).get('title', "None") for post in posts)
+            hot_list.extend(post.get('data', {}).get('title', "None")
+                            for post in posts)
 
             after = data.get('data', {}).get('after', None)
             if after is None:
@@ -38,4 +40,3 @@ def recurse(subreddit, hot_list=[], after=None):
             return None
     except requests.RequestException:
         return None
-
