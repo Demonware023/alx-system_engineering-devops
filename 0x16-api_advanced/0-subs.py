@@ -15,13 +15,16 @@ def number_of_subscribers(subreddit):
     :return: Number of subscribers or 0 if invalid subreddit
     """
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
-    headers = {'User-Agent': 'Custom User-Agent'}
-    
+    headers = {'User-Agent': 'Custom User-Agent for Project'}
+
     try:
         response = requests.get(url, headers=headers, allow_redirects=False)
         if response.status_code == 200:
             data = response.json()
-            return data['data']['subscribers']
-    except Exception:
-        pass
+            return data.get('data', {}).get('subscribers', 0)
+        else:
+            print(f"Error: Received status code {response.status_code}")
+    except requests.RequestException as e:
+        print(f"Request failed: {e}")
     return 0
+
