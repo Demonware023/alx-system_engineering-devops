@@ -20,7 +20,8 @@ def count_words(subreddit, word_list, counts={}, after=None):
     params = {'after': after, 'limit': 100}
 
     try:
-        response = requests.get(url, headers=headers, params=params, allow_redirects=False)
+        response = requests.get(url, headers=headers, params=params,
+                                allow_redirects=False)
         if response.status_code == 200:
             data = response.json()
             posts = data.get('data', {}).get('children', [])
@@ -50,4 +51,3 @@ def count_words(subreddit, word_list, counts={}, after=None):
             return
     except requests.RequestException:
         return
-
