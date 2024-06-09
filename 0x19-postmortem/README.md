@@ -1,3 +1,5 @@
+![pQ9YzVY](https://github.com/Demonware023/alx-system_engineering-devops/assets/134267322/69cfad98-3575-4e37-a3b1-d2a69c99ed71)
+
 Incident Report: API Query Overload Outage
 
 Issue Summary
