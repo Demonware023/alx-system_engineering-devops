@@ -1,12 +1,16 @@
+My First PostMortem
+
 ![pQ9YzVY](https://github.com/Demonware023/alx-system_engineering-devops/assets/134267322/69cfad98-3575-4e37-a3b1-d2a69c99ed71)
+
+![WhatsApp Image 2024-06-09 at 11 06 28](https://github.com/Demonware023/alx-system_engineering-devops/assets/134267322/63c03124-17f4-4d06-beb2-bc80616c26f0)
 
 Incident Report: API Query Overload Outage
 
-Issue Summary
+🐱‍👤 Issue Summary
 
 On June 2, 2024, from 2:00 PM to 2:45 PM PST, our API infrastructure experienced a significant outage. During this period, our backend was overwhelmed by excessive requests, causing slow responses and timeouts for all users. Approximately 90% of our user base was affected, experiencing delays in page loads and failures in retrieving data. The root cause was identified as an excessive number of queries (100 per page request) being sent to the backend for each page requested by users.
 
-Timeline
+📅 Timeline
 1:50 PM: Configuration change deployed to improve user data fetching efficiency.
 2:00 PM: Outage begins, with a noticeable slowdown in response times.
 2:02 PM: Monitoring alerts triggered, indicating high server load and increased response times.
@@ -20,7 +24,7 @@ Timeline
 2:45 PM: 100% of traffic back online, with normal response times restored.
 
 
-Root Cause and Resolution
+🌪️ The Perfect Storm: Root Cause and Resolution
 
 The issue stemmed from a recent configuration change aimed at improving user data fetching efficiency. A bug in the frontend code caused each page request to trigger 100 queries to the backend instead of the intended single query. This overwhelmed the backend servers, causing a queue buildup and delayed responses.
 
@@ -29,7 +33,7 @@ Upon detection, the incident response team initially investigated network traffi
 The immediate resolution involved throttling incoming requests to prevent further server overload. Subsequently, the recent configuration change was rolled back, and the frontend code was corrected to ensure only one query per page request. This rollback and fix restored normal operation by 2:45 PM PST.
 
 
-Corrective and Preventative Measures
+🛡️ Corrective and Preventative Measures
 
 In response to this incident, several measures are being implemented to prevent future occurrences:
 
@@ -56,4 +60,9 @@ Develop Load Testing Suite: Create automated tests to simulate high-load scenari
 
 Training for Engineers: Conduct training sessions to familiarize the engineering team with new processes and monitoring tools.
 
-By implementing these corrective and preventative measures, we aim to improve the reliability and stability of our API infrastructure, ensuring a seamless experience for our users. We apologize for the inconvenience caused and appreciate the continued support of our users and developers.
+
+By implementing these corrective and preventative measures, we aim to improve the reliability and stability of our API infrastructure, ensuring a seamless experience for our users. We apologize for the inconvenience caused and appreciate the continued support of our users and developers. Github Profiler is committed to continually and quickly improving our technology and operational processes to prevent outages. We appreciate your patience and again apologize for the impact to you, your users, and your organization. We thank you for your business and continued support.
+
+Sincerely,
+
+The Github Profiler API Team
